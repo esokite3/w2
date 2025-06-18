@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Caitlyn Lee</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+
+        <div class="desktop">
+            <div class="folder" data-section="home" onclick="openWindow('about-me-window')">
+                <img src="etc/folder-icon.png" alt="Home folder" class="folder-icon">
+                <div class="folder-name">Home</div>
+            </div>
+            <div class="folder" data-section="experience-projects" onclick="openWindow('experience-folder-window')">
+                <img src="etc/folder-icon.png" alt="Experience and projects folder" class="folder-icon">
+                <div class="folder-name">Experience & Projects</div>
+            </div>
+            <div class="folder" data-section="socials">
+                <img src="etc/folder-icon.png" alt="Socials folder" class="folder-icon" onclick="openWindow('socials-folder-window')">
+                <div class="folder-name">Socials</div> 
+            </div>
+        </div>
+
+        <!-- About me file -->
+        <div class="content- textedit-window" id="about-me-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow()"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">about_me.txt</div>
+                <div class="window-spacer"></div>
+            </div>
+
+            <div class="window-content">
+                <div class="window-text">
+                    Hello! I'm Caitlyn 👋
+
+                    I am an undergraduate student at UC San Diego majoring in Computer Science and minoring 
+                    in Business Analytics.
+
+                    I've been doing some form of art for the majority of my life, but this took a shift once
+                    I got to college. I aspire to find the art in technology to combine two of my identities.
+
+                    Besides my academic career, I am a huge basketball fan! I am about to begin working on a
+                    tool that can become an addition to the D1 basketball recruitment strategy, which involves
+                    data analysis and web scraping to search for the best recruits in both high school and the
+                    NCAA transfer portal.
+
+                    I hope you enjoy the rest of my portfolio!
+
+                    ---
+                    Last modified: Fri Jun 13 17:02:38
+                </div>
+            </div>
+
+            <div class="window-status">
+                <span>Plain Text • 833 characters</span>
+                <span>Line 33, Column 3</span>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Experience Folder Window -->
+        <div class="window" id="experience-folder-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('experience-folder-window')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">Experience & Projects</div>
+            </div>
+
+            <div class="window-content folder-content">
+                <div class="file" onclick="openWindow('experience-text-window')">
+                    <img src="etc/text-icon.png" class="file-icon" alt="Text file">
+                    <span class="file-name">experience_projects.txt</span>
+                </div>
+                <div class="file" onclick="openWindow('resume-window')">
+                    <img src="etc/pdf-icon.png" class="file-icon" alt="PDF file">
+                    <span class="file-name">resume.pdf</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resume Floating Window -->
+        <div class="floating-window pdf-window" id="resume-content">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeResume()"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">resume.pdf</div>
+                <div class="window-spacer"></div>
+            </div>
+
+            <div class="pdf-toolbar">
+                <button class="toolbar-btn" onclick="downloadPDF()">Download</button>
+                <button class="toolbar-btn" onclick="printPDF()">Print</button>
+                <div class="zoom-controls">
+                    <button class="toolbar-btn">-</button>
+                    <span>100%</span>
+                    <button class="toolbar-btn">+</button>
+                </div>
+                <div class="page-nav">
+                    <span>Page 1 of 1</span>
+                </div>
+            </div>
+
+            <div class="pdf-content">
+                <embed src="etc/Resume-CaitlynLee.pdf" type="application/pdf" width="100%" height="100%">
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Experience and project txt file -->
+        <div class="window" id="experience-text-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('experience-text-window')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">experience_projects.txt</div>
+            </div>
+
+            <div class="window-content">
+                <strong>EXPERIENCE</strong>
+
+                Current
+                01  Undergraduate Research Assistant @ UCSD
+                    I am assisting Professor Edwin Solares with his research about avocado
+                    trees. My duties include labeling nodes on avocado trees for training
+                    machine learning models that are used as tools for creating ideal avocado 
+                    trees.
+
+                02  Sports Marketing & Web Development @ KSDT Sports
+                    I market sporting events for KSDT, a radio station on the UCSD campus. This 
+                    includes creating graphics and managing the KSDT Sports social media accounts.
+                    I am also spearheading the development of a website just for KSDT Sports.
+
+                Previous
+                03  Boutique Associate @ Aritzia
+                    I delivered tailored customer service in a fast-paced retail environment, 
+                    assisting hundreds of customers per day.
+
+                04  Summer Immersion Program Participant @ Girls Who Code
+                    I learned the basics of web development and created a basic portfolio website 
+                    using HTML, CSS, and Javascript.
+
+                <strong>PROJECTS</strong>
+                01  Bikeshare Data Analysis
+                    I used Python, Pandas, Numpy, and Scikit-learn to analyze the impact of 
+                    environmental conditions on the usage of bikeshare program.
+
+                <strong>
+                    <span class="resume-link" onclick="openResume()">Check out my resume for more details!</span>
+                </strong>
+                
+                ---
+                Last modified: Fri Jun 13 17:30:33
+            </div>
+            <div class="window-status">
+                <span>Plain Text • 1,618 characters</span>
+                <span>Line 33, Column 3</span>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Socials folder contents -->
+        <div class="window" id="socials-folder-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('socials-folder-window')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">Socials</div>
+            </div>
+
+            <div class="window-content socials-content">
+                <!-- Icons as links -->
+                <a href="https://www.linkedin.com/in/caitlyn-lee3" target="_blank" class="social-icon">
+                    <img src="etc/linkedin.png" alt="LinkedIn">
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/esokite3" target="_blank" class="social-icon">
+                    <img src="etc/github.png" alt="GitHub">
+                    <span>GitHub</span>
+                </a>
+                <a href="mailto:leecaitlyn33@gmail.com" class="social-icon">
+                    <img src="etc/email-icon.png" alt="Email">
+                    <span>Mail</span>
+                </a>
+            </div>
+        </div>
+
+        
+            
+        <script src="script.js" async defer></script>
+    </body>
+</html>
