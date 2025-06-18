@@ -1,10 +1,546 @@
+/* base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* desktop with folders */
+.desktop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    padding: 40px;
+    height: 100vh;
+    flex-wrap: nowrap;
+}
+
+.folder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.folder:hover {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transform: translateY(-2px);
+}
+
+.folder:active {
+    transform: translateY(0);
+}
+
+.folder-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    background: transparent;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.folder-icon::before {
+    content: "📁";
+    font-size: 32px;
+}
+
+.folder-name {
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    max-width: 100px;
+    word-wrap: break-word;
+}
+
+/* window styles */
+.window, .content-textedit-window, .floating-window {
+    position: fixed;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: none;
+    min-width: 400px;
+    min-height: 300px;
+    z-index: 100;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+}
+
+/* show windows when they have the 'show' class */
+.window.show, .content-textedit-window.show, .floating-window.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* maximized window state */
+.window.maximized, .content-textedit-window.maximized, .floating-window.maximized {
+    border-radius: 0;
+    transition: all 0.3s ease;
+}
+
+/* minimized window state */
+.window.minimized, .content-textedit-window.minimized, .floating-window.minimized {
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.content-textedit-window {
+    width: 600px;
+    height: 500px;
+    top: 10%;
+    left: 15%;
+}
+
+.floating-window {
+    width: 700px;
+    height: 600px;
+    top: 8%;
+    left: 20%;
+}
+
+/* window header */
+.window-header {
+    background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
+    border-bottom: 1px solid #d0d0d0;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    cursor: move;
+}
+
+/* Disable cursor move when maximized */
+.window.maximized .window-header,
+.content-textedit-window.maximized .window-header,
+.floating-window.maximized .window-header {
+    cursor: default;
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+    margin-right: 10px;
+}
+
+.window-control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.window-control.close {
+    background: #ff5f57;
+    border: 1px solid #e04640;
+}
+
+.window-control.minimize {
+    background: #ffbd2e;
+    border: 1px solid #dea123;
+}
+
+.window-control.maximize {
+    background: #28ca42;
+    border: 1px solid #1dad2b;
+}
+
+.window-control:hover {
+    filter: brightness(1.1);
+}
+
+/* Add symbols on hover */
+.window-control.close:hover::after {
+    content: '×';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    color: #8b0000;
+    font-weight: bold;
+}
+
+.window-control.minimize:hover::after {
+    content: '−';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    color: #8b4513;
+    font-weight: bold;
+}
+
+.window-control.maximize:hover::after {
+    content: '+';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    color: #006400;
+    font-weight: bold;
+}
+
+.window-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    flex: 1;
+    text-align: center;
+}
+
+.window-spacer {
+    width: 80px;
+}
+
+/* window content */
+.window-content {
+    padding: 20px;
+    height: calc(100% - 28px);
+    overflow-y: auto;
+    background: white;
+}
+
+.window-text {
+    font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #333;
+    white-space: pre-wrap;
+}
+
+/* folder content styles */
+.folder-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    align-content: flex-start;
+}
+
+.file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    width: 72px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.file:hover {
+    background: rgba(0, 122, 255, 0.15);
+}
+
+.file-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 4px;
+    background: transparent;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.file-name {
+    font-size: 10px;
+    color: #333;
+    text-align: center;
+    word-wrap: break-word;
+    line-height: 1.1;
+    width: 100%;
+    overflow-wrap: break-word;
+    max-height: 24px;
+    overflow: hidden;
+}
+
+/* socials style */
+.socials-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    align-content: flex-start;
+}
+
+.socials-content a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    width: 72px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.socials-content a:hover {
+    background: rgba(0, 122, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.social-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 4px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.social-icon.linkedin {
+    background: #0077b5;
+}
+
+.social-icon.github {
+    background: #333;
+}
+
+.social-icon.email {
+    background: #ea4335;
+}
+
+.socials-content span {
+    font-size: 10px;
+    color: #333;
+    text-align: center;
+    word-wrap: break-word;
+    line-height: 1.1;
+    font-weight: 400;
+    width: 100%;
+    overflow-wrap: break-word;
+    max-height: 24px;
+    overflow: hidden;
+}
+
+/* Image window styles */
+.image-toolbar {
+    background: #f8f8f8;
+    border-bottom: 1px solid #e0e0e0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    gap: 15px;
+}
+
+.toolbar-btn {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover {
+    background: #f0f0f0;
+    border-color: #999;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.zoom-controls span {
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.image-content {
+    flex: 1;
+    background: #f5f5f5;
+    padding: 10px;
+    overflow: auto;
+    text-align: center;
+}
+
+.image-content img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.2s ease;
+}
+
+/* window status bar */
+.window-status {
+    background: #f8f8f8;
+    border-top: 1px solid #e0e0e0;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    font-size: 11px;
+    color: #666;
+}
+
+/* resume link styling */
+.resume-link {
+    color: #007aff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.resume-link:hover {
+    color: #0056cc;
+}
+
+/* resize handle */
 .resize-handle {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  right: 2px;
-  bottom: 2px;
-  cursor: se-resize;
-  background: transparent;
-  z-index: 10;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    right: 0;
+    bottom: 0;
+    cursor: se-resize;
+    background: transparent;
+    z-index: 10;
+}
+
+/* Hide resize handle when maximized */
+.window.maximized .resize-handle,
+.content-textedit-window.maximized .resize-handle,
+.floating-window.maximized .resize-handle {
+    display: none;
+}
+
+.resize-handle::after {
+    content: '';
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    width: 12px;
+    height: 2px;
+    background: #999;
+    border-radius: 1px;
+}
+
+.resize-handle::before {
+    content: '';
+    position: absolute;
+    right: 2px;
+    bottom: 6px;
+    width: 8px;
+    height: 2px;
+    background: #999;
+    border-radius: 1px;
+}
+
+/* responsive adjustments */
+@media (max-width: 768px) {
+    .desktop {
+        grid-template-columns: repeat(auto-fit, 100px);
+        gap: 30px;
+        padding: 20px;
+    }
+    
+    .folder-icon {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .window, .content-textedit-window, .floating-window {
+        width: 95vw !important;
+        height: 90vh !important;
+        top: 5vh !important;
+        left: 2.5vw !important;
+    }
+}
+
+/* Animation for window opening */
+@keyframes windowOpen {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.window.show, 
+.content-textedit-window.show, 
+.floating-window.show {
+    animation: windowOpen 0.2s ease-out;
+}
+
+/* Animation for minimize */
+@keyframes windowMinimize {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.window.minimized,
+.content-textedit-window.minimized,
+.floating-window.minimized {
+    animation: windowMinimize 0.2s ease-out;
+}
+
+/* scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }

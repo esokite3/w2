@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,25 +11,44 @@
     <body>
 
         <div class="desktop">
-            <div class="folder" data-section="home" onclick="openWindow('about-me-window')">
+            <div class="folder" data-target="home-folder-window">
                 <img src="etc/folder-icon.png" alt="Home folder" class="folder-icon">
                 <div class="folder-name">Home</div>
             </div>
-            <div class="folder" data-section="experience-projects" onclick="openWindow('experience-folder-window')">
+            <div class="folder" data-target="experience-projects">
                 <img src="etc/folder-icon.png" alt="Experience and projects folder" class="folder-icon">
                 <div class="folder-name">Experience & Projects</div>
             </div>
             <div class="folder" data-section="socials">
-                <img src="etc/folder-icon.png" alt="Socials folder" class="folder-icon" onclick="openWindow('socials-folder-window')">
+                <img src="etc/folder-icon.png" alt="Socials folder" class="folder-icon">
                 <div class="folder-name">Socials</div> 
             </div>
         </div>
 
-        <!-- About me file -->
-        <div class="content- textedit-window" id="about-me-window">
+        <!-- home folder window -->
+         <div class="window" id="home-folder-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <div class="window-control close" onclick="closeWindow()"></div>
+                    <div class="window-control close" onclick="closeWindow('home-folder-window')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">Home</div>
+                <div class="window-spacer"></div>
+            </div>
+            <div class="window-content">
+                <div class="file" onclick="openWindow('about-me-window')">
+                    <img src="etc/text-icon.png" class="file-icon" alt="Text file">
+                    <span class="file-name">about_me.txt</span>
+                </div>
+            </div>
+         </div>
+
+        <!-- About me file -->
+        <div class="window" id="about-me-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('about-me-window')"></div>
                     <div class="window-control minimize"></div>
                     <div class="window-control maximize"></div>
                 </div>
@@ -40,21 +59,21 @@
             <div class="window-content">
                 <div class="window-text">
                     Hello! I'm Caitlyn 👋
-
+                    <br>
                     I am an undergraduate student at UC San Diego majoring in Computer Science and minoring 
                     in Business Analytics.
-
+                    <br>
                     I've been doing some form of art for the majority of my life, but this took a shift once
                     I got to college. I aspire to find the art in technology to combine two of my identities.
-
+                    <br>
                     Besides my academic career, I am a huge basketball fan! I am about to begin working on a
                     tool that can become an addition to the D1 basketball recruitment strategy, which involves
                     data analysis and web scraping to search for the best recruits in both high school and the
                     NCAA transfer portal.
-
+                    <br>
                     I hope you enjoy the rest of my portfolio!
-
-                    ---
+                    <br>
+                    ---<br>
                     Last modified: Fri Jun 13 17:02:38
                 </div>
             </div>
@@ -90,32 +109,29 @@
         </div>
 
         <!-- Resume Floating Window -->
-        <div class="floating-window pdf-window" id="resume-content">
+        <div class="floating-window image-window" id="resume-image-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <div class="window-control close" onclick="closeResume()"></div>
+                    <div class="window-control close" onclick="closeWindow('resume-image-window')"></div>
                     <div class="window-control minimize"></div>
                     <div class="window-control maximize"></div>
                 </div>
-                <div class="window-title">resume.pdf</div>
+                <div class="window-title">resume.jpg</div>
                 <div class="window-spacer"></div>
             </div>
 
-            <div class="pdf-toolbar">
-                <button class="toolbar-btn" onclick="downloadPDF()">Download</button>
-                <button class="toolbar-btn" onclick="printPDF()">Print</button>
+            <div class="image-toolbar">
+                <button class="toolbar-btn" onclick="downloadImage()">Download</button>
+                <button class="toolbar-btn" onclick="printImage()">Print</button>
                 <div class="zoom-controls">
-                    <button class="toolbar-btn">-</button>
-                    <span>100%</span>
-                    <button class="toolbar-btn">+</button>
-                </div>
-                <div class="page-nav">
-                    <span>Page 1 of 1</span>
+                    <button class="toolbar-btn" onclick="zoomOut()">-</button>
+                    <span id="zoom-level">100%</span>
+                    <button class="toolbar-btn" onclick="zoomIn()">+</button>
                 </div>
             </div>
 
-            <div class="pdf-content">
-                <embed src="etc/Resume-CaitlynLee.pdf" type="application/pdf" width="100%" height="100%">
+            <div class="image-content">
+                <img id="resume-image" src="etc/resume.jpg" alt="Resume" style="max-width: 100%; height: auto;">
             </div>
             <div class="resize-handle"></div>
         </div>
@@ -133,38 +149,39 @@
 
             <div class="window-content">
                 <strong>EXPERIENCE</strong>
-
-                Current
-                01  Undergraduate Research Assistant @ UCSD
-                    I am assisting Professor Edwin Solares with his research about avocado
+                <br><br>
+                <strong>Current</strong><br>
+                01  <em>Undergraduate Research Assistant @ UCSD</em><br>
+                    I will be assisting Professor Edwin Solares with his research about avocado
                     trees. My duties include labeling nodes on avocado trees for training
-                    machine learning models that are used as tools for creating ideal avocado 
+                    machine learning models that are used as tools for creating ideal avocado
                     trees.
-
-                02  Sports Marketing & Web Development @ KSDT Sports
+                <br><br>
+                02  <em>Sports Marketing & Web Development @ KSDT Sports</em><br>
                     I market sporting events for KSDT, a radio station on the UCSD campus. This 
                     includes creating graphics and managing the KSDT Sports social media accounts.
                     I am also spearheading the development of a website just for KSDT Sports.
-
-                Previous
-                03  Boutique Associate @ Aritzia
+                <br><br>
+                <strong>Previous</strong><br><br>
+                03  <em>Boutique Associate @ Aritzia</em><br>
                     I delivered tailored customer service in a fast-paced retail environment, 
                     assisting hundreds of customers per day.
-
-                04  Summer Immersion Program Participant @ Girls Who Code
+                <br>
+                04  <em>Immersion Program Participant @ Girls Who Code</em><br>
                     I learned the basics of web development and created a basic portfolio website 
                     using HTML, CSS, and Javascript.
-
+                <br><br>
                 <strong>PROJECTS</strong>
-                01  Bikeshare Data Analysis
+                <br>
+                01  <em>Bikeshare Data Analysis</em><br>
                     I used Python, Pandas, Numpy, and Scikit-learn to analyze the impact of 
                     environmental conditions on the usage of bikeshare program.
-
+                <br>
                 <strong>
                     <span class="resume-link" onclick="openResume()">Check out my resume for more details!</span>
                 </strong>
-                
-                ---
+                <br>
+                ---<br>
                 Last modified: Fri Jun 13 17:30:33
             </div>
             <div class="window-status">
@@ -187,16 +204,16 @@
 
             <div class="window-content socials-content">
                 <!-- Icons as links -->
-                <a href="https://www.linkedin.com/in/caitlyn-lee3" target="_blank" class="social-icon">
-                    <img src="etc/linkedin.png" alt="LinkedIn">
+                <a href="https://www.linkedin.com/in/caitlyn-lee3" target="_blank">
+                    <img src="etc/linkedin.png" alt="LinkedIn" class="social-icon">
                     <span>LinkedIn</span>
                 </a>
-                <a href="https://github.com/esokite3" target="_blank" class="social-icon">
-                    <img src="etc/github.png" alt="GitHub">
+                <a href="https://github.com/esokite3" target="_blank">
+                    <img src="etc/github.png" alt="GitHub" class="social-icon">
                     <span>GitHub</span>
                 </a>
-                <a href="mailto:leecaitlyn33@gmail.com" class="social-icon">
-                    <img src="etc/email-icon.png" alt="Email">
+                <a href="mailto:leecaitlyn33@gmail.com">
+                    <img src="etc/mail-icon.png" alt="Email" class="social-icon">
                     <span>Mail</span>
                 </a>
             </div>
