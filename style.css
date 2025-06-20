@@ -132,7 +132,7 @@ body {
 }
 
 .folder-icon::before {
-    content: "ðŸ“";
+    content: "📁";
     font-size: 32px;
 }
 
@@ -238,7 +238,7 @@ body {
 
 /* Add symbols on hover */
 .window-control.close:hover::after {
-    content: 'Ã—';
+    content: '×';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -249,7 +249,7 @@ body {
 }
 
 .window-control.minimize:hover::after {
-    content: 'âˆ’';
+    content: '−';
     position: absolute;
     top: 50%;
     left: 50%;
