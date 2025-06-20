@@ -19,6 +19,15 @@ body {
     user-select: none;
 }
 
+.caitlyn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 18%;
+    font-size: 3.3vw;
+    color: #333;
+}
+
 /* intro text */
 .fake-text-message {
     position: fixed;
