@@ -7,9 +7,9 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    background-attachment: fixed;
-    /* background-image: url(etc/background.webp); */
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed; */
+    background-image: url(etc/wallpaper.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -17,15 +17,6 @@ body {
     height: 100vh;
     overflow: hidden;
     user-select: none;
-}
-
-.caitlyn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 18%;
-    font-size: 3.3vw;
-    color: #333;
 }
 
 /* intro text */
