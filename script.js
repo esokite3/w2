@@ -1,3 +1,6 @@
+// Add this at the top of your script.js file
+const windowStates = new Map();
+
 let currentZoom = 100;
 
 function downloadImage() {
@@ -118,6 +121,10 @@ function openWindow(id) {
     const win = document.getElementById(id);
     if (win) {
         win.classList.add('show');
+        // Ensure proper positioning when opening
+        if (!win.style.left || !win.style.top) {
+            setDefaultPosition(win);
+        }
     }
 }
 
@@ -129,12 +136,26 @@ function closeWindow(id) {
     }
 }
 
+// Function to set default position for windows
+function setDefaultPosition(windowElement) {
+    const rect = windowElement.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    // Center the window if no position is set
+    const left = Math.max(0, (viewportWidth - rect.width) / 2);
+    const top = Math.max(0, (viewportHeight - rect.height) / 2);
+    
+    windowElement.style.left = left + 'px';
+    windowElement.style.top = top + 'px';
+}
+
 // Function to open resume image window
 function openResume() {
     openWindow('resume-image-window');
 }
 
-// Make a window draggable
+// Make a window draggable - IMPROVED VERSION
 function makeDraggable(el) {
     const header = el.querySelector('.window-header');
     let offsetX = 0, offsetY = 0;
@@ -143,16 +164,30 @@ function makeDraggable(el) {
     if (!header) return;
 
     header.addEventListener('mousedown', (e) => {
+        // Don't drag if maximized
+        if (el.classList.contains('maximized')) return;
+        
         isDragging = true;
-        offsetX = e.clientX - el.offsetLeft;
-        offsetY = e.clientY - el.offsetTop;
+        const rect = el.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
         el.style.zIndex = 200; // bring to front
+        
+        // Prevent text selection while dragging
+        e.preventDefault();
     });
 
     document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            el.style.left = `${e.clientX - offsetX}px`;
-            el.style.top = `${e.clientY - offsetY}px`;
+        if (isDragging && !el.classList.contains('maximized')) {
+            const newLeft = e.clientX - offsetX;
+            const newTop = e.clientY - offsetY;
+            
+            // Keep window within viewport bounds
+            const maxLeft = window.innerWidth - el.offsetWidth;
+            const maxTop = window.innerHeight - el.offsetHeight;
+            
+            el.style.left = Math.max(0, Math.min(maxLeft, newLeft)) + 'px';
+            el.style.top = Math.max(0, Math.min(maxTop, newTop)) + 'px';
         }
     });
 
@@ -178,8 +213,12 @@ function makeResizable(el) {
         let startHeight = parseInt(document.defaultView.getComputedStyle(el).height, 10);
 
         function doDrag(e) {
-            el.style.width = `${startWidth + e.clientX - startX}px`;
-            el.style.height = `${startHeight + e.clientY - startY}px`;
+            const newWidth = startWidth + e.clientX - startX;
+            const newHeight = startHeight + e.clientY - startY;
+            
+            // Set minimum dimensions
+            el.style.width = Math.max(300, newWidth) + 'px';
+            el.style.height = Math.max(200, newHeight) + 'px';
         }
 
         function stopDrag() {
@@ -220,40 +259,22 @@ window.addEventListener('load', () => {
         makeResizable(win);
     });
 
-    // Set initial positions for windows
-    const homeWindow = document.getElementById('home-folder-window');
-    if (homeWindow) {
-        homeWindow.style.left = '100px';
-        homeWindow.style.top = '100px';
-    }
+    // Set initial positions for windows - IMPROVED
+    const positions = [
+        { id: 'home-folder-window', left: '100px', top: '100px' },
+        { id: 'about-me-window', left: '150px', top: '120px' },
+        { id: 'experience-folder-window', left: '200px', top: '140px' },
+        { id: 'experience-text-window', left: '250px', top: '160px' },
+        { id: 'socials-folder-window', left: '300px', top: '180px' },
+        { id: 'resume-image-window', left: '350px', top: '200px' }
+    ];
 
-    const aboutWindow = document.getElementById('about-me-window');
-    if (aboutWindow) {
-        aboutWindow.style.left = '150px';
-        aboutWindow.style.top = '120px';
-    }
-
-    const expFolderWindow = document.getElementById('experience-folder-window');
-    if (expFolderWindow) {
-        expFolderWindow.style.left = '200px';
-        expFolderWindow.style.top = '140px';
-    }
-
-    const expTextWindow = document.getElementById('experience-text-window');
-    if (expTextWindow) {
-        expTextWindow.style.left = '250px';
-        expTextWindow.style.top = '160px';
-    }
-
-    const socialsWindow = document.getElementById('socials-folder-window');
-    if (socialsWindow) {
-        socialsWindow.style.left = '300px';
-        socialsWindow.style.top = '180px';
-    }
-
-    const resumeWindow = document.getElementById('resume-image-window');
-    if (resumeWindow) {
-        resumeWindow.style.left = '350px';
-        resumeWindow.style.top = '200px';
-    }
+    positions.forEach(pos => {
+        const window = document.getElementById(pos.id);
+        if (window) {
+            window.style.left = pos.left;
+            window.style.top = pos.top;
+            window.style.position = 'fixed'; // Ensure fixed positioning
+        }
+    });
 });
