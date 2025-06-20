@@ -1,13 +1,16 @@
-// Add this at the top of your script.js file
 const windowStates = new Map();
 
 let currentZoom = 100;
 
-function downloadImage() {
-    const link = document.createElement('a');
-    link.href = 'etc/resume.jpg';
-    link.download = 'CaitlynLee_Resume.jpg';
-    link.click();
+async function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const img = document.getElementById('resume-image');
+
+    const pdf = new jsPDF();
+    const imgData = img.src;
+
+    pdf.addImage(imgData, 'JPEG', 10, 10, 180, 250); // adjust sizing as needed
+    pdf.save('CaitlynLee_Resume.pdf');
 }
 
 function printImage() {
@@ -48,87 +51,80 @@ function updateZoom() {
 }
 
 // Save the current state of a window
-function saveWindowState(windowElement) {
-    const id = windowElement.id;
-    const rect = windowElement.getBoundingClientRect();
-    
-    windowStates.set(id, {
-        left: windowElement.style.left || rect.left + 'px',
-        top: windowElement.style.top || rect.top + 'px',
-        width: windowElement.style.width || rect.width + 'px',
-        height: windowElement.style.height || rect.height + 'px',
-        isMaximized: windowElement.classList.contains('maximized')
-    });
+function saveWindowState(win) {
+    win.dataset.left = win.style.left;
+    win.dataset.top = win.style.top;
+    win.dataset.width = win.style.width;
+    win.dataset.height = win.style.height;
 }
 
+
+
 // Restore window to its saved state
-function restoreWindowState(windowElement) {
-    const id = windowElement.id;
-    const state = windowStates.get(id);
-    
-    if (state) {
-        windowElement.style.left = state.left;
-        windowElement.style.top = state.top;
-        windowElement.style.width = state.width;
-        windowElement.style.height = state.height;
-    }
+function restoreWindowState(win) {
+    win.style.left = win.dataset.left;
+    win.style.top = win.dataset.top;
+    win.style.width = win.dataset.width;
+    win.style.height = win.dataset.height;
+    makeDraggable(win);
 }
 
 // Maximize window functionality
 function maximizeWindow(windowId) {
-    const windowElement = document.getElementById(windowId);
-    if (!windowElement) return;
-    
-    if (windowElement.classList.contains('maximized')) {
-        // Restore from maximized state
-        windowElement.classList.remove('maximized');
-        restoreWindowState(windowElement);
+    const win = document.getElementById(windowId);
+    if (!win) return;
+
+    if (win.classList.contains('maximized')) {
+        win.classList.remove('maximized');
+        restoreWindowState(win);
+        win.style.position = 'absolute';
+        makeDraggable(win);
     } else {
-        // Save current state before maximizing
-        saveWindowState(windowElement);
-        
-        // Maximize the window
-        windowElement.classList.add('maximized');
-        windowElement.style.left = '0px';
-        windowElement.style.top = '0px';
-        windowElement.style.width = '100vw';
-        windowElement.style.height = '100vh';
+        saveWindowState(win);
+        win.classList.add('maximized');
+        win.style.left = '0px';
+        win.style.top = '0px';
+        win.style.width = '100vw';
+        win.style.height = '100vh';
+        win.style.position = 'fixed';
     }
 }
 
-// Minimize window functionality
+// minimize window functionality
 function minimizeWindow(windowId) {
-    const windowElement = document.getElementById(windowId);
-    if (!windowElement) return;
-    
-    if (windowElement.classList.contains('minimized')) {
-        // Restore from minimized state
-        windowElement.classList.remove('minimized');
-        windowElement.classList.remove('show');
-        // Add show class after a brief delay to trigger animation
-        setTimeout(() => {
-            windowElement.classList.add('show');
-        }, 10);
+    const win = document.getElementById(windowId);
+    if (!win) return;
+
+    if (win.classList.contains('minimized')) {
+        win.classList.remove('minimized');
+
+        win.style.height = win.dataset.height;
+        win.style.width = win.dataset.width;
+        win.style.left = win.dataset.left;
+        win.style.top = win.dataset.top;
     } else {
-        // Minimize the window (hide it)
-        windowElement.classList.add('minimized');
-        windowElement.classList.remove('show');
+        win.dataset.height = win.style.height;
+        win.dataset.width = win.style.width;
+        win.dataset.left = win.style.left;
+        win.dataset.top = win.style.top;
+
+        win.classList.add('minimized');
     }
 }
 
-// Open a window by ID
+
+// open a window by ID
 function openWindow(id) {
     const win = document.getElementById(id);
     if (win) {
         win.classList.add('show');
-        // Ensure proper positioning when opening
         if (!win.style.left || !win.style.top) {
             setDefaultPosition(win);
         }
     }
 }
 
-// Close a window by ID
+// close a window by ID
 function closeWindow(id) {
     const win = document.getElementById(id);
     if (win) {
@@ -141,8 +137,7 @@ function setDefaultPosition(windowElement) {
     const rect = windowElement.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    
-    // Center the window if no position is set
+
     const left = Math.max(0, (viewportWidth - rect.width) / 2);
     const top = Math.max(0, (viewportHeight - rect.height) / 2);
     
@@ -164,16 +159,14 @@ function makeDraggable(el) {
     if (!header) return;
 
     header.addEventListener('mousedown', (e) => {
-        // Don't drag if maximized
         if (el.classList.contains('maximized')) return;
         
         isDragging = true;
         const rect = el.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
-        el.style.zIndex = 200; // bring to front
+        el.style.zIndex = 200;
         
-        // Prevent text selection while dragging
         e.preventDefault();
     });
 
@@ -182,7 +175,6 @@ function makeDraggable(el) {
             const newLeft = e.clientX - offsetX;
             const newTop = e.clientY - offsetY;
             
-            // Keep window within viewport bounds
             const maxLeft = window.innerWidth - el.offsetWidth;
             const maxTop = window.innerHeight - el.offsetHeight;
             
@@ -199,7 +191,7 @@ function makeDraggable(el) {
 // Make a window resizable from bottom-right
 function makeResizable(el) {
     const existingHandle = el.querySelector('.resize-handle');
-    if (existingHandle) return; // Don't add multiple handles
+    if (existingHandle) return;
     
     const resizer = document.createElement('div');
     resizer.classList.add('resize-handle');
@@ -215,8 +207,7 @@ function makeResizable(el) {
         function doDrag(e) {
             const newWidth = startWidth + e.clientX - startX;
             const newHeight = startHeight + e.clientY - startY;
-            
-            // Set minimum dimensions
+           
             el.style.width = Math.max(300, newWidth) + 'px';
             el.style.height = Math.max(200, newHeight) + 'px';
         }
@@ -233,12 +224,11 @@ function makeResizable(el) {
 
 // Initialize folders and windows
 window.addEventListener('load', () => {
-    // Handle folder clicks
     document.querySelectorAll('.folder').forEach(folder => {
         folder.addEventListener('click', () => {
             const targetId = folder.getAttribute('data-target');
             const section = folder.getAttribute('data-section');
-            
+
             if (targetId) {
                 openWindow(targetId);
             } else if (section === 'socials') {
@@ -247,19 +237,12 @@ window.addEventListener('load', () => {
         });
     });
 
-    // Handle Experience & Projects folder click
-    document.querySelector('.folder[data-target="experience-projects"]').addEventListener('click', () => {
-        openWindow('experience-folder-window');
-    });
-
-    // Initialize all windows to be draggable and resizable
     const allWindows = document.querySelectorAll('.window, .floating-window');
     allWindows.forEach(win => {
         makeDraggable(win);
         makeResizable(win);
     });
 
-    // Set initial positions for windows - IMPROVED
     const positions = [
         { id: 'home-folder-window', left: '100px', top: '100px' },
         { id: 'about-me-window', left: '150px', top: '120px' },
@@ -274,7 +257,7 @@ window.addEventListener('load', () => {
         if (window) {
             window.style.left = pos.left;
             window.style.top = pos.top;
-            window.style.position = 'fixed'; // Ensure fixed positioning
+            window.style.position = 'absolute';
         }
     });
 });

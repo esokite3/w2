@@ -18,7 +18,7 @@
                         <strong>Caitlyn</strong>
                     </div>
                     <div class="text-body">
-                        Hey! Thanks for visiting my website 😄
+                        Hey! Thanks for visiting my website. It's still a work in progress 😄
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <img src="etc/folder-icon.png" alt="Home folder" class="folder-icon">
                 <div class="folder-name">Home</div>
             </div>
-            <div class="folder" data-target="experience-projects">
+            <div class="folder" data-target="experience-folder-window">
                 <img src="etc/folder-icon.png" alt="Experience and projects folder" class="folder-icon">
                 <div class="folder-name">Experience & Projects</div>
             </div>
@@ -44,8 +44,8 @@
             <div class="window-header">
                 <div class="window-controls">
                     <div class="window-control close" onclick="closeWindow('home-folder-window')"></div>
-                    <div class="window-control minimize"></div>
-                    <div class="window-control maximize"></div>
+                    <div class="window-control minimize" onclick="minimizeWindow('home-folder-window')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('home-folder-window')"></div>
                 </div>
                 <div class="window-title">Home</div>
                 <div class="window-spacer"></div>
@@ -63,8 +63,8 @@
             <div class="window-header">
                 <div class="window-controls">
                     <div class="window-control close" onclick="closeWindow('about-me-window')"></div>
-                    <div class="window-control minimize"></div>
-                    <div class="window-control maximize"></div>
+                    <div class="window-control minimize" onclick="minimizeWindow('about-me-window')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('about-me-window')"></div>
                 </div>
                 <div class="window-title">about_me.txt</div>
                 <div class="window-spacer"></div>
@@ -104,8 +104,8 @@
             <div class="window-header">
                 <div class="window-controls">
                     <div class="window-control close" onclick="closeWindow('experience-folder-window')"></div>
-                    <div class="window-control minimize"></div>
-                    <div class="window-control maximize"></div>
+                    <div class="window-control minimize" onclick="minimizeWindow('experience-folder-window')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('experience-folder-window')"></div>
                 </div>
                 <div class="window-title">Experience & Projects</div>
             </div>
@@ -115,7 +115,7 @@
                     <img src="etc/text-icon.png" class="file-icon" alt="Text file">
                     <span class="file-name">experience_projects.txt</span>
                 </div>
-                <div class="file" onclick="openWindow('resume-window')">
+                <div class="file" onclick="openWindow('resume-image-window')">
                     <img src="etc/pdf-icon.png" class="file-icon" alt="PDF file">
                     <span class="file-name">resume.pdf</span>
                 </div>
@@ -127,15 +127,15 @@
             <div class="window-header">
                 <div class="window-controls">
                     <div class="window-control close" onclick="closeWindow('resume-image-window')"></div>
-                    <div class="window-control minimize"></div>
-                    <div class="window-control maximize"></div>
+                    <div class="window-control minimize" onclick="minimizeWindow('resume-image-window')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('resume-image-window')"></div>
                 </div>
                 <div class="window-title">resume.jpg</div>
                 <div class="window-spacer"></div>
             </div>
 
             <div class="image-toolbar">
-                <button class="toolbar-btn" onclick="downloadImage()">Download</button>
+                <button class="toolbar-btn" onclick="downloadPDF()">Download</button>
                 <button class="toolbar-btn" onclick="printImage()">Print</button>
                 <div class="zoom-controls">
                     <button class="toolbar-btn" onclick="zoomOut()">-</button>
@@ -145,7 +145,7 @@
             </div>
 
             <div class="image-content">
-                <img id="resume-image" src="etc/resume.jpg" alt="Resume" style="max-width: 100%; height: auto;">
+                <img id="resume-image" src="etc/Resume-CaitlynLee.jpg" alt="Resume" style="max-width: 100%; height: auto;">
             </div>
             <div class="resize-handle"></div>
         </div>
@@ -155,8 +155,8 @@
             <div class="window-header">
                 <div class="window-controls">
                     <div class="window-control close" onclick="closeWindow('experience-text-window')"></div>
-                    <div class="window-control minimize"></div>
-                    <div class="window-control maximize"></div>
+                    <div class="window-control minimize" onclick="minimizeWindow('experience-text-window')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('experience-text-window')"></div>
                 </div>
                 <div class="window-title">experience_projects.txt</div>
             </div>
@@ -210,8 +210,8 @@
             <div class="window-header">
                 <div class="window-controls">
                     <div class="window-control close" onclick="closeWindow('socials-folder-window')"></div>
-                    <div class="window-control minimize"></div>
-                    <div class="window-control maximize"></div>
+                    <div class="window-control minimize" onclick="minimizeWindow('socials-folder-window')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('socials-folder-window')"></div>
                 </div>
                 <div class="window-title">Socials</div>
             </div>
@@ -232,7 +232,8 @@
                 </a>
             </div>
         </div>
-            
+          
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <script src="script.js" async defer></script>
     </body>
 </html>
